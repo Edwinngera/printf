@@ -1,7 +1,7 @@
 /*
  * File: handlers.c
- * Auth: Brennan D Baraban
- *       Michael Klein
+ * Auth: Edwin Rimui
+ *       
  */
 
 #include "holberton.h"
