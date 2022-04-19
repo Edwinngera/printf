@@ -1,34 +1,39 @@
-#ifndef _HOLBERTON_
-#define _HOLBERTON_
+#ifndef HOLBERTON_H
+#define HOLBERTON_H
 
-#include <unistd.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <limits.h>
+#include <stdlib.h>
 
 /**
-* struct op - flag / function object
-* @c: flag
-* @f: function
+* struct types_arguments - Struct op
+*
+* @t: The operator
+* @f: The function associated
 */
-
-typedef struct op
+typedef struct types_arguments
 {
-	char *c;
-	int (*f)(va_list);
-} op_t;
-
-int _printf(const char *format, ...);
+	char t;
+	int (*f)(va_list va);
+} types;
 int _putchar(char c);
-int print_c(va_list ar_list);
-int (*get_func(char s))(va_list ar_list);
-int print_s(va_list ar_list);
-int print_d(va_list ar_list);
-int print_i(va_list ar_numlist);
-int print_b(va_list binary_list);
-int print_u(va_list ar_list);
-int print_o(va_list ar_list);
-int print_x(va_list ar_list);
-int print_X(va_list ar_list);
+int _strlen(char *s);
+int print_number(va_list va);
+int binary(va_list va);
+int print_unsigned(va_list va);
+int hexa(va_list va);
+int hexa_upper(va_list va);
+int octal(va_list va);
+int print_rot(va_list va);
+char *malloc_str(char *str);
+char *rot13(char *p);
+int print_rev(va_list va);
+int hexa_special(unsigned int c);
+int stringhexa(va_list va);
+int pointer(va_list va);
+int hexa_pointer(unsigned long int c);
+int _printf(const char *format, ...);
 
 #endif
