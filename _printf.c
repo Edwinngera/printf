@@ -1,51 +1,111 @@
 #include "main.h"
-
 /**
- * _printf - formatted output conversion and print data.
- * @format: input string.
- *
- * Return: number of chars printed.
+ *_printf - printf
+ *@format: const char pointer
+ *Description: this functions implement some functions of printf
+ *Return: num of characteres printed
  */
 int _printf(const char *format, ...)
 {
-	unsigned int i = 0, len = 0, ibuf = 0;
-	va_list arguments;
-	int (*function)(va_list, char *, unsigned int);
-	char *buffer;
+	const char *string;
+	int cont = 0;
+	va_list arg;
 
-	va_start(arguments, format), buffer = malloc(sizeof(char) * 1024);
-	if (!format || !buffer || (format[i] == '%' && !format[i + 1]))
+	if (!format)
 		return (-1);
-	if (!format[i])
-		return (0);
-	for (i = 0; format && format[i]; i++)
+
+	va_start(arg, format);
+	string = format;
+
+	cont = loop_format(arg, string);
+
+	va_end(arg);
+	return (cont);
+}
+/**
+ *loop_format - loop format
+ *@arg: va_list arg
+ *@string: pointer from format
+ *Description: This function make loop tp string pointer
+ *Return: num of characteres printed
+ */
+int loop_format(va_list arg, const char *string)
+{
+	int i = 0, flag = 0, cont_fm = 0, cont = 0, check_per = 0;
+
+	while (i < _strlen((char *)string) && *string != '\0')
 	{
-		if (format[i] == '%')
+		char aux = string[i];
+
+		if (aux == '%')
 		{
-			if (format[i + 1] == '\0')
-			{	print_buf(buffer, ibuf), free(buffer), va_end(arguments);
+			i++, flag++;
+			aux = string[i];
+			if (aux == '\0' && _strlen((char *)string) == 1)
 				return (-1);
+			if (aux == '\0')
+				return (cont);
+			if (aux == '%')
+			{
+				flag++;
+			} else
+			{
+				cont_fm = function_manager(aux, arg);
+				if (cont_fm >= 0 && cont_fm != -1)
+				{
+					i++;
+					aux = string[i];
+					if (aux == '%')
+						flag--;
+					cont = cont + cont_fm;
+				} else if (cont_fm == -1 && aux != '\n')
+				{
+					cont += _putchar('%');
+				}
 			}
-			else
-			{	function = get_print_func(format, i + 1);
-				if (function == NULL)
-				{
-					if (format[i + 1] == ' ' && !format[i + 2])
-						return (-1);
-					handl_buf(buffer, format[i], ibuf), len++, i--;
-				}
-				else
-				{
-					len += function(arguments, buffer, ibuf);
-					i += ev_print_func(format, i + 1);
-				}
-			} i++;
 		}
-		else
-			handl_buf(buffer, format[i], ibuf), len++;
-		for (ibuf = len; ibuf > 1024; ibuf -= 1024)
-			;
+		check_per = check_percent(&flag, aux);
+		cont += check_per;
+		if (check_per == 0 && aux != '\0' && aux != '%')
+			cont += _putchar(aux), i++;
+		check_per = 0;
 	}
-	print_buf(buffer, ibuf), free(buffer), va_end(arguments);
-	return (len);
+	return (cont);
+}
+/**
+ * check_percent - call function manager
+ *@flag: value by reference
+ *@aux: character
+ *Description: This function print % pear
+ *Return: 1 if % is printed
+ */
+int check_percent(int *flag, char aux)
+{
+	int tmp_flag;
+	int cont = 0;
+
+	tmp_flag = *flag;
+	if (tmp_flag == 2 && aux == '%')
+	{
+		_putchar('%');
+		tmp_flag = 0;
+		cont = 1;
+	}
+	return (cont);
+}
+
+/**
+ * call_function_manager - call function manager
+ *@aux: character parameter
+ *@arg: va_list arg
+ *Description: This function call function manager
+ *Return: num of characteres printed
+ */
+
+int call_function_manager(char aux, va_list arg)
+{
+	int cont = 0;
+
+	cont = function_manager(aux, arg);
+	return (cont);
 }
