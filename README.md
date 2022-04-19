@@ -476,8 +476,8 @@ Output:
 
 ## Authors :black_nib:
 
-* Brennan D Baraban <[bdbaraban](https://github.com/bdbaraban)>
-* Michael Klein <[mKleinCreative](https://github.com/mKleinCreative)>
+* Edwin Ngera <[Edwinngera](https://github.com/edwinngera)>
+
 
 ## License :lock:
 
